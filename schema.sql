@@ -1,37 +1,60 @@
-CREATE TABLE if not exists Passengers (
+CREATE TABLE Users(
     "id" INTEGER,
-    "first_name" TEXT NOT NULL,
-    "last_name" TEXT NOT NULL,
-    "age" INTEGER NOT NULL,
-     PRIMARY KEY("id")
+    "first" TEXT NOT NULL,
+    "last" TEXT NOT NULL,
+    "user_name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    primary key("id")
 );
 
-CREATE TABLE if not exists Airlines (
+CREATE TABLE school_university(
     "id" INTEGER,
-    "name" TEXT ,
-    "concourse" TEXT NOT NULL CHECK("concourse" IN ('A','B','C','D','E','F')),
-    PRIMARY KEY("id")
-
+    "name" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "year" INTEGER NOT NULL,
+    primary key("id")
 );
 
-CREATE TABLE if not exists Flights (
+CREATE TABLE Companies(
     "id" INTEGER,
-    "flight_number" INTEGER NOT NULL,
-    "airline_id" INTEGER,
-    "The_code_of_the_airport" INTEGER,
-    "code_of_the_airport_departing_from" INTEGER NOT NULL,
-    "code_of_the_airport_heading_to" INTEGER NOT NULL,
-    "arrival_date" NUMERIC,
-    FOREIGN KEY("airline_id") REFERENCES "Airlines"("id")
+    "name" TEXT NOT NULL,
+    "industry" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    primary key("id")
 );
 
-CREATE TABLE  if not exists Check_Ins (
+CREATE TABLE Connections_with_People(
     "id" INTEGER,
-    "Passenger_id" INTEGER,
-    "Flight_id" INTEGER,
-    "date" NUMERIC ,
-    "flight" TEXT,
-    FOREIGN KEY("Passenger_id") REFERENCES "Passengers"("id"),
-    FOREIGN KEY("Flight_id") REFERENCES "Flights"("id")
+    "user1_id" TEXT,
+    "user2_id" TEXT,
+    primary key("id")
+    foreign key("user1_id") references users(id),
+    foreign key("user2_id") references users(id),
+    CHECK ("user1_id" != "user2_id"),
+    UNIQUE ("user1_id", "user2_id")
+);
 
+CREATE TABLE Connections_with_Schools(
+    "id" INTEGER,
+    "start_date" NUMERIC NOT NULL,
+    "end_date" NUMERIC NOT NULL,
+    "shcool_id" INTEGER,
+    "user_id" INTEGER,
+    "type" TEXT NOT NULL,
+    primary key("id"),
+    foreign key("shcool_id") references shcool(id),
+    foreign key("user_id") references users(id)
+);
+
+CREATE TABLE Connections_with_Companies(
+    "id" INTEGER,
+    "start_date" NUMERIC NOT NULL,
+    "end_date" NUMERIC NOT NULL,
+    "Companie_id" INTEGER,
+    "user_id" INTEGER,
+    "title" TEXT NOT NULL,
+    primary key("id"),
+    foreign key("Companie_id") references Companie(id),
+    foreign key("user_id") references users(id)
 );
